@@ -8,3 +8,24 @@
 .sidebar {
     min-height: 730px;
 }
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 20px;
+  }
+.hashtag {
+    margin: 0px 3px;
+    padding: 5px 10px;
+}
+
+.reactions {
+    margin: 15px 0 0 0;
+}
+
+.create-post{
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 50px;
+}

@@ -1,16 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import Post from "./Post";
-import './Post-List.css';
+import { PostList as PostListData } from "../../store/post-list-store";
 
 const PostList = () => {
+  const { postList } = useContext(PostListData);
+  console.log(postList);
   return (
     <div className="cards-container">
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
+      {postList.map((post) => (
+        <Post key={post.id} post={post} />
+      ))}
     </div>
   );
 };

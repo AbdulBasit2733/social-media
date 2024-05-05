@@ -11,15 +11,22 @@ const PostList = () => {
 
   useEffect(() => {
     setIsFetching(true);
-    console.log("Fetch Stated");
-    fetch("https://dummyjson.com/posts")
+    // console.log("Fetch Stated");
+    const controller = new AbortController();
+    const signal = controller.signal;
+    fetch("https://dummyjson.com/posts",{signal})
       .then((res) => res.json())
       .then((data) => {
         addInitialPosts(data.posts);
         setIsFetching(false);
-        console.log("Fetch Returned");
+        // console.log("Fetch Returned");
       });
-    console.log("Fetch Ended");
+      return () => {
+        console.log("Cleaning Up useEffect");
+        controller.abort();
+
+      }
+    // console.log("Fetch Ended");
   }, []);
 
   return (

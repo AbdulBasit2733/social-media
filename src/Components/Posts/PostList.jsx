@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Post from "./Post";
 import { PostList as PostListData } from "../../store/post-list-store";
 import WelcomeMessage from "../Message/WelcomeMessage";
@@ -6,20 +6,18 @@ import WelcomeMessage from "../Message/WelcomeMessage";
 const PostList = () => {
   const { postList, addInitialPosts } = useContext(PostListData);
 
-  const handleGetPostsClick = () => {
-    // console.log("get Post Clicked");
+  useEffect(() => {
     fetch("https://dummyjson.com/posts")
       .then((res) => res.json())
       .then((data) => {
         addInitialPosts(data.posts);
       });
-  };
+  }, []);
+
   return (
     <>
       <div className="cards-container">
-        {postList.length === 0 && (
-          <WelcomeMessage onGetPostsClick={handleGetPostsClick} />
-        )}
+        {postList.length === 0 && <WelcomeMessage />}
         {postList.map((post) => (
           <Post key={post.id} post={post} />
         ))}

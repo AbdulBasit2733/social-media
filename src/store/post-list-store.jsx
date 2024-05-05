@@ -4,6 +4,7 @@ export const PostList = createContext({
   postList: [],
   addPost: () => {},
   deletePost: () => {},
+  addInitialPosts: () => {},
 });
 
 const postListReducer = (currPostList, action) => {
@@ -14,15 +15,14 @@ const postListReducer = (currPostList, action) => {
     );
   } else if (action.type === "ADD_POST") {
     newPostList = [action.payload, ...currPostList];
+  } else if (action.type === "ADD_INITIAL_POSTS") {
+    newPostList = action.payload.posts;
   }
   return newPostList;
 };
 
 const PostListProvider = ({ children }) => {
-  const [postList, dispatchPostList] = useReducer(
-    postListReducer,
-    DEFAULT_POST_LIST
-  );
+  const [postList, dispatchPostList] = useReducer(postListReducer, []);
   const addPost = (userId, postTitle, postBody, reactions, tags) => {
     // console.log(userId, postTitle, postBody, reactions, tags);
     dispatchPostList({
@@ -34,6 +34,15 @@ const PostListProvider = ({ children }) => {
         reactions: reactions,
         userID: userId,
         tags: tags,
+      },
+    });
+  };
+  const addInitialPosts = (posts) => {
+    // console.log(userId, postTitle, postBody, reactions, tags);
+    dispatchPostList({
+      type: "ADD_INITIAL_POSTS",
+      payload: {
+        posts,
       },
     });
   };
@@ -49,6 +58,7 @@ const PostListProvider = ({ children }) => {
     <PostList.Provider
       value={{
         postList: postList,
+        addInitialPosts: addInitialPosts,
         addPost: addPost,
         deletePost: deletePost,
       }}
@@ -57,24 +67,5 @@ const PostListProvider = ({ children }) => {
     </PostList.Provider>
   );
 };
-
-const DEFAULT_POST_LIST = [
-  {
-    id: "1",
-    title: "Goto College",
-    body: "hi frinds i am going to college",
-    reactions: 2,
-    userID: "user-9",
-    tags: ["vacations", "college", "enjoying"],
-  },
-  {
-    id: "2",
-    title: "Pass Ho gaye",
-    body: "4 sall ki masti ke baad bhi pass hogaye",
-    reactions: 10,
-    userID: "user-10",
-    tags: ["graduating", "college", "unbelievable"],
-  },
-];
 
 export default PostListProvider;
